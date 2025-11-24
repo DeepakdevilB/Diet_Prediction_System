@@ -67,8 +67,13 @@ class CaloriePredictor:
         score = self.model.score(X_test, y_test)
         print(f"Model R^2 Score: {score:.4f}")
         
-        joblib.dump(self.model, self.model_path)
-        print(f"Model saved to {self.model_path}")
+        try:
+            joblib.dump(self.model, self.model_path)
+            print(f"Model saved to {self.model_path}")
+        except (OSError, IOError) as e:
+            print(f"Could not save model (likely read-only filesystem): {e}")
+            # Continue without saving - model is still in memory
+
 
     def load(self):
         if os.path.exists(self.model_path):
