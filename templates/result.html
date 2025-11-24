@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card fade-in">
+    <div class="header">
+        <h1>📊 Your Diet Plan</h1>
+        <p>Personalized recommendations based on your profile</p>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="metric-box">
+            <h3>BMI</h3>
+            <div class="value">{{ bmi }}</div>
+            <div class="label {{ bmi_category.lower().replace(' ', '-') }}">{{ bmi_category }}</div>
+        </div>
+        <div class="metric-box">
+            <h3>Daily Calories</h3>
+            <div class="value">{{ calories }} kcal</div>
+            <div class="sub-label">Goal: {{ goal }}</div>
+        </div>
+        <div class="metric-box">
+            <h3>TDEE</h3>
+            <div class="value">{{ tdee }} kcal</div>
+            <div class="sub-label">Maintenance</div>
+        </div>
+    </div>
+
+    <div class="diet-section">
+        <h2>🥗 Daily Meal Plan</h2>
+        <div class="accordion">
+            {% for meal, items in diet_plan.items() %}
+            <div class="accordion-item">
+                <button class="accordion-header">{{ meal }} <span class="arrow">▼</span></button>
+                <div class="accordion-content">
+                    {% if items %}
+                    {% for item in items %}
+                    <div class="food-item">
+                        <div class="food-name">{{ item['Food'] }}</div>
+                        <div class="food-macros">
+                            <span>{{ item['Calories'] }} kcal</span>
+                            <span>P: {{ item['Protein'] }}g</span>
+                            <span>C: {{ item['Carbs'] }}g</span>
+                            <span>F: {{ item['Fat'] }}g</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p>No specific recommendations for this meal.</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="actions">
+        <a href="/" class="btn-secondary">Calculate Again</a>
+    </div>
+</div>
+{% endblock %}
